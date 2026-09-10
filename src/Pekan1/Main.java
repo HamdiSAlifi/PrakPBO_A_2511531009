@@ -44,8 +44,15 @@ public class Main {
 					double setor = input.nextDouble();
 					akunAktif.setorTunai(setor); //Behavior/Method
 				}
+				break;
 			case 3:
-				System.out.println("Fitur ini akan kerjakan sebagai Tugas Mandiri.");
+				if (akunAktif == null) {
+					System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening");
+				} else {
+					System.out.print("Masukkan nominal tarik: ");
+					double setor = input.nextDouble();
+					akunAktif.tarikTunai(setor); //Behavior/Method
+				}
 				break;
 			case 4:
 				if (akunAktif == null) {
