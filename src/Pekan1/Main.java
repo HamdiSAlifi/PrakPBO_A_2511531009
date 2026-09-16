@@ -74,6 +74,7 @@ public class Main {
 				} else {
 					akunAktif.cekInformasi();
 				}
+				break;
 				
 			case 5:
 				if (daftarRekening.isEmpty()) {
