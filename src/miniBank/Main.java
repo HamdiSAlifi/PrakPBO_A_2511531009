@@ -1,4 +1,4 @@
-package Pekan1;
+package miniBank;
 
 import java.util.ArrayList;
 import java.util.Scanner;
