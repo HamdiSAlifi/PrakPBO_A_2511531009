@@ -20,6 +20,8 @@ public class Main {
 			System.out.println("3. Tarik Tunai");
 			System.out.println("4. Cek Informasi Rekening");
 			System.out.println("5. Ganti Akun Aktif");
+			System.out.println("6. Cetak Mutasi (Riwayat)");
+			System.out.println("7. Akumulasi Tarik-Setor");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 			
@@ -34,14 +36,14 @@ public class Main {
 				String nama = input.nextLine();
 				System.out.print("Masukkan Saldo Awal: ");
 				double saldo = input.nextDouble();
-				if (saldo < 5000) {
+				if (saldo < 50000) {
 					System.out.println("Saldo Awal Tidak Mencukupi. Masukkan Saldo Minimal Rp50.000,00");
 				} else {
 					//Manggil Constructor
 					akunAktif = new Rekening(no, nama, saldo);
 					daftarRekening.add(akunAktif);
-					break; 					
 				}
+				break; 					
 					
 				
 			case 2:
@@ -99,6 +101,22 @@ public class Main {
 				}
 				break;
 				
+			case 6:
+			    if (akunAktif == null) {
+			        System.out.println("Error: Anda belum membuka rekening!");
+			    } else {
+			        akunAktif.cetakMutasi();
+			    }
+			    break;
+			    
+			case 7: 
+				if (akunAktif == null) {
+			        System.out.println("Error: Anda belum membuka rekening!");
+			    } else {
+			    	akunAktif.akumulasi();
+		        }
+			    break;
+			    
 			case 0:
 				isRunning = false;
 				System.out.println("Sistem ditutup. Terima kasih!");
