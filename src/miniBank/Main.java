@@ -22,6 +22,7 @@ public class Main {
 			System.out.println("5. Ganti Akun Aktif");
 			System.out.println("6. Cetak Mutasi (Riwayat)");
 			System.out.println("7. Akumulasi Tarik-Setor");
+			System.out.println("8. Ganti PIN");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 			
@@ -36,17 +37,20 @@ public class Main {
 				String nama = input.nextLine();
 				System.out.print("Masukkan Saldo Awal: ");
 				double saldo = input.nextDouble();
+				input.nextLine(); // clear buffer		
+				System.out.print("Masukkan PIN Awal (6 Digit): ");
+				String pin = input.nextLine();
+				
 				if (saldo < 50000) {
 					System.out.println("Saldo Awal Tidak Mencukupi. Masukkan Saldo Minimal Rp50.000,00");
 				} else {
 					//Manggil Constructor
-					akunAktif = new Rekening(no, nama, saldo);
+					akunAktif = new Rekening(no, nama, saldo, pin);
 					daftarRekening.add(akunAktif);
+					break;
 				}
-				break; 					
-					
-				
-			case 2:
+				 					
+			case 2: // setor tunai
 				if (akunAktif == null) {
 					System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening");
 				} else {
@@ -60,13 +64,19 @@ public class Main {
 				}
 				break;
 				
-			case 3:
+			case 3: // tarik tunai
 				if (akunAktif == null) {
 					System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening");
 				} else {
-					System.out.print("Masukkan nominal tarik: ");
-					double tarik = input.nextDouble();
-					akunAktif.tarikTunai(tarik); //Behavior/Method
+					System.out.print("Masukkan PIN: ");
+					String tryPIN = input.nextLine();
+					if (akunAktif.otentikasi(tryPIN)) {
+						System.out.print("Masukkan nominal tarik: ");
+						double tarik = input.nextDouble();
+						akunAktif.tarikTunai(tarik); //Behavior/Method
+					} else {
+						System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
+					}
 				}
 				break;
 				
@@ -101,21 +111,31 @@ public class Main {
 				}
 				break;
 				
-			case 6:
+			case 6: //cetak mutasi
 			    if (akunAktif == null) {
 			        System.out.println("Error: Anda belum membuka rekening!");
 			    } else {
-			        akunAktif.cetakMutasi();
+			    	System.out.print("Masukkan PIN: ");
+					String tryPIN = input.nextLine();
+					if (akunAktif.otentikasi(tryPIN)) {
+						akunAktif.cetakMutasi();
+					} else {
+						System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
+					}
 			    }
 			    break;
 			    
-			case 7: 
+			case 7: // akumulasi
 				if (akunAktif == null) {
 			        System.out.println("Error: Anda belum membuka rekening!");
 			    } else {
 			    	akunAktif.akumulasi();
 		        }
 			    break;
+			    
+			case 8:
+				
+				break;
 			    
 			case 0:
 				isRunning = false;

@@ -1,9 +1,10 @@
 package miniBank;
 
 public class Transaksi {
-	String idTransaksi;
-	String jenis;
-	double nominal;
+	// 2026-09-24 | private
+	private String idTransaksi;
+	private String jenis;
+	private double nominal;
 	
 	// Constructor
 	public Transaksi (String id, String jenis, double nominal) {
@@ -13,6 +14,10 @@ public class Transaksi {
 	}
 	
 	// Getter
+	public String getIdTransaksi() {
+		return idTransaksi;
+	}
+	
 	public String getJenis() {
 		return jenis;
 	}
