@@ -134,7 +134,22 @@ public class Main {
 			    break;
 			    
 			case 8:
-				
+				if (akunAktif == null) {
+					System.out.println("Error: Anda belum membuka rekening!");
+				} else {
+					System.out.println("Masukkan PIN Lama: ");
+					String pinLama = input.nextLine();
+					System.out.println("Masukkan PIN Baru (6 Digit): ");
+					String pinBaru = input.nextLine();
+					System.out.println("Konfirmasi PIN Baru: ");
+					String konfirmasiPin = input.nextLine();
+					
+					if (!pinBaru.equals(konfirmasiPin)) {
+						System.out.println("Gagal: Konfirmasi PIN tidak cocok!");
+					} else {
+						akunAktif.gantiPin(pinLama, pinBaru);
+					}
+				}
 				break;
 			    
 			case 0:
