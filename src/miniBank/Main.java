@@ -44,13 +44,13 @@ public class Main {
 				if (saldo < 50000) {
 					System.out.println("Saldo Awal Tidak Mencukupi. Masukkan Saldo Minimal Rp50.000,00");
 				} else {
-					//Manggil Constructor
+					// Recall Constructor
 					akunAktif = new Rekening(no, nama, saldo, pin);
 					daftarRekening.add(akunAktif);
 					break;
 				}
 				 					
-			case 2: // setor tunai
+			case 2: // setor-tunai
 				if (akunAktif == null) {
 					System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening");
 				} else {
@@ -64,7 +64,7 @@ public class Main {
 				}
 				break;
 				
-			case 3: // tarik tunai
+			case 3: // tarik-tunai
 				if (akunAktif == null) {
 					System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening");
 				} else {
@@ -111,7 +111,7 @@ public class Main {
 				}
 				break;
 				
-			case 6: //cetak mutasi
+			case 6: //cetak-mutasi
 			    if (akunAktif == null) {
 			        System.out.println("Error: Anda belum membuka rekening!");
 			    } else {
