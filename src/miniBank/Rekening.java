@@ -6,21 +6,21 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Rekening {
-	// 2026-09-24 | private
+	// 2026-10-01 | 
 	private String nomorRekening;
 	private String namaPemilik;
-	private double saldo;
-	private double saldoAwal; // menyimpan saldo awal saat rekening dibuat, untuk challage pekan 2 soal 1
 	private String pin;
 	
+	// 2026-10-01 | Menggunakan protected untuk subclass access
+	protected double saldo;
+	protected ArrayList<Transaksi> riwayatTransaksi;
+
+	// menyimpan saldo awal saat rekening dibuat, untuk challage pekan 2 soal 1
+	private double saldoAwal; 
+	private NumberFormat nf = NumberFormat.getCurrencyInstance();
 	// 2026-09-24 | Challenge 1 Attempt: additional variable for challenge
 	private int percobaan = 0;
 	private boolean akunTerblokir = false;
-	
-	private NumberFormat nf = NumberFormat.getCurrencyInstance();
-	
-	// Implementasi Asossiasi (1 to many)
-	private ArrayList<Transaksi> riwayatTransaksi;
 	
 	// 2026-09-24 | Constructor Modification to receive pinAwal
 	public Rekening(String nomor, String nama, double saldoAwal, String pinAwal) {
@@ -136,8 +136,8 @@ public class Rekening {
 			} else {
 				saldo -= nominal;
 				// Integrasi Rekam Jejeak Penarikkan
-				String idTrxt = "TRX-T-" + System.currentTimeMillis();
-				Transaksi trxtBaru = new Transaksi(idTrxt, "Debit", nominal);
+				String idTrx = "TRX-T-" + System.currentTimeMillis();
+				Transaksi trxtBaru = new Transaksi(idTrx, "Debit", nominal);
 				
 				riwayatTransaksi.add(trxtBaru);
 				

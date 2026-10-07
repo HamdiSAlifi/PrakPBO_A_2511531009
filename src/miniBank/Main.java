@@ -21,8 +21,9 @@ public class Main {
 			System.out.println("4. Cek Informasi Rekening");
 			System.out.println("5. Ganti Akun Aktif");
 			System.out.println("6. Cetak Mutasi (Riwayat)");
-			System.out.println("7. Akumulasi Tarik-Setor");
-			System.out.println("8. Ganti PIN");
+			System.out.println("7. Simulasi Akhir Bulan");
+			System.out.println("8. Akumulasi Tarik-Setor");
+			System.out.println("9. Ganti PIN");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 			
@@ -37,18 +38,41 @@ public class Main {
 				String nama = input.nextLine();
 				System.out.print("Masukkan Saldo Awal: ");
 				double saldo = input.nextDouble();
-				input.nextLine(); // clear buffer		
+				input.nextLine(); // clear buffer
+				
+				// validasi saldo sebelum membuat objek
+				if (saldo < 50000) {
+					System.out.println("Gagal: Saldo Awal Tidak Mencukupi. Masukkan Saldo Minimal Rp50.000,00");
+					break;
+				}
+				
 				System.out.print("Masukkan PIN Awal (6 Digit): ");
 				String pin = input.nextLine();
 				
-				if (saldo < 50000) {
-					System.out.println("Saldo Awal Tidak Mencukupi. Masukkan Saldo Minimal Rp50.000,00");
+				// Tugas 1.1 | Opsi Produk
+				System.out.print("Pilih Produk: \n1. Tabungan Umum \n2. Giro Bisnis \n\nPilihan Anda: ");
+				String pilihanRekening = input.nextLine();
+				
+				// Tugas 1.2 | Meminta input sukuBunga (%) jika Tabungan, instansiasi objek RekeningTabungan
+				if (pilihanRekening.equals("1")) {
+					System.out.print("Masukkan Suku Bunga (%): ");
+					double sukuBunga = input.nextInt();
+					akunAktif = new RekeningTabungan(no, nama, saldo, pin, sukuBunga);
+					
+				// Tugas 1.3 | Meminta input batasOverdraft (limit pinjaman) jika Giro, instansiasi objek RekeningGiro
+				} else if (pilihanRekening.equals("2")) {
+					System.out.print("Masukkan Batas Overdraft (limit pinjaman): ");
+					double batasOverdraft = input.nextInt();
+					akunAktif = new RekeningGiro(no, nama, saldo, pin, batasOverdraft);
 				} else {
-					// Recall Constructor
-					akunAktif = new Rekening(no, nama, saldo, pin);
-					daftarRekening.add(akunAktif);
+					System.out.println("Pilihan produk tidak valid. Rekeninng tidak dibuat.");
 					break;
 				}
+				
+				// Tugas 1.4 | Menyimpan ke daftar rekening (Upcasting: subclass dikenali sebagai rekening)
+				daftarRekening.add(akunAktif);
+				System.out.println("Rekening berhasil ditambahkan ke daftar.");
+				break;
 				 					
 			case 2: // setor-tunai
 				if (akunAktif == null) {
@@ -56,6 +80,7 @@ public class Main {
 				} else {
 					System.out.print("Masukkan nominal setor: ");
 					double setor = input.nextDouble();
+					input.nextLine();
 					if (setor < 10000) {
 						System.out.print("Minimal Setor Rp10.000,00");
 					} else {
@@ -73,6 +98,7 @@ public class Main {
 					if (akunAktif.otentikasi(tryPIN)) {
 						System.out.print("Masukkan nominal tarik: ");
 						double tarik = input.nextDouble();
+						input.nextLine();
 						akunAktif.tarikTunai(tarik); //Behavior/Method
 					} else {
 						System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
@@ -125,7 +151,22 @@ public class Main {
 			    }
 			    break;
 			    
-			case 7: // akumulasi
+		    // Tugas 2 | Simulasi Akhir Bulan
+			case 7: 
+				if (akunAktif == null) {
+					System.out.println("Error: Anda belum membuka rekening!");
+				// Tugas 2.2 | Periksa apakah akunAktif adalah Rek
+				} else if (akunAktif instanceof RekeningTabungan) {
+					// Tugas 2.3 | Downcast lalu panggil method tambahBungaAkhirBulan()
+					RekeningTabungan tabungan = (RekeningTabungan) akunAktif;
+					tabungan.tambahBungaAkhirBulan();
+				} else {
+					// Tugas 2.4 | Tolak jika selain Rek. Tabungan
+					System.out.println("Gagal: Fitur bunga akhir bulan hanya berlaku untuk Rekening Tabungan.");
+				}
+				break;
+			    
+			case 8: // akumulasi
 				if (akunAktif == null) {
 			        System.out.println("Error: Anda belum membuka rekening!");
 			    } else {
@@ -133,7 +174,7 @@ public class Main {
 		        }
 			    break;
 			    
-			case 8:
+			case 9:
 				if (akunAktif == null) {
 					System.out.println("Error: Anda belum membuka rekening!");
 				} else {
