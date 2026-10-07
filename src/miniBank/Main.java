@@ -24,6 +24,7 @@ public class Main {
 			System.out.println("7. Simulasi Akhir Bulan");
 			System.out.println("8. Akumulasi Tarik-Setor");
 			System.out.println("9. Ganti PIN");
+			System.out.println("10. Simulasi Akhir Tahun (Bunga Akhir Tahun)");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 			
@@ -50,7 +51,7 @@ public class Main {
 				String pin = input.nextLine();
 				
 				// Tugas 1.1 | Opsi Produk
-				System.out.print("Pilih Produk: \n1. Tabungan Umum \n2. Giro Bisnis \n\nPilihan Anda: ");
+				System.out.print("Pilih Produk: \n1. Tabungan Umum \n2. Giro Bisnis \n3. Rekening VIP \n4. Kartu Debit\n\nPilihan Anda: ");
 				String pilihanRekening = input.nextLine();
 				
 				// Tugas 1.2 | Meminta input sukuBunga (%) jika Tabungan, instansiasi objek RekeningTabungan
@@ -64,6 +65,17 @@ public class Main {
 					System.out.print("Masukkan Batas Overdraft (limit pinjaman): ");
 					double batasOverdraft = input.nextInt();
 					akunAktif = new RekeningGiro(no, nama, saldo, pin, batasOverdraft);
+					
+				// Challenge | Rekening VIP — bonus 100.000 otomatis saat pembukaan
+				} else if (pilihanRekening.equals("3")) {
+					akunAktif = new RekeningVIP(no, nama, saldo, pin);
+					
+				// Challenge | Kartu Debit — turunan RekeningTabungan, limit tarik 500.000/transaksi
+				} else if (pilihanRekening.equals("4")) {
+					System.out.print("Masukkan Suku Bunga (%): ");
+					double sukuBunga = input.nextInt();
+					akunAktif = new KartuDebit(no, nama, saldo, pin, sukuBunga);
+					
 				} else {
 					System.out.println("Pilihan produk tidak valid. Rekeninng tidak dibuat.");
 					break;
@@ -190,6 +202,18 @@ public class Main {
 					} else {
 						akunAktif.gantiPin(pinLama, pinBaru);
 					}
+				}
+				break;
+			
+			// Challenge | Simulasi Akhir Tahun — bunga akhir tahun, hanya jika saldo > 10.000.000
+			case 10:
+				if (akunAktif == null) {
+					System.out.println("Error: Anda belum membuka rekening!");
+				} else if (akunAktif instanceof RekeningTabungan) {
+					RekeningTabungan tabunganTahunan = (RekeningTabungan) akunAktif;
+					tabunganTahunan.tambahBungaAkhirTahun();
+				} else {
+					System.out.println("Gagal: Fitur bunga akhir tahun hanya berlaku untuk Rekening Tabungan dan Kartu Debit.");
 				}
 				break;
 			    
