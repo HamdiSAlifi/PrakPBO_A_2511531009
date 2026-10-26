@@ -2,10 +2,8 @@ package miniBank;
 
 public class RekeningTabungan extends Rekening{
 	
-	// Atribut spesifik milik Tabungan
 	private double sukuBunga;
 	
-	// Contructor SubClass
 	public RekeningTabungan(String nomor,String nama, double saldoAwal, String pinAwal, double sukuBunga) {
 		// super()
 		super(nomor, nama, saldoAwal, pinAwal);
@@ -13,8 +11,6 @@ public class RekeningTabungan extends Rekening{
 	}
 	
 	public void tambahBungaAkhirBulan() {
-		//
-		// Bisa mengakses saldo secara langsung dari class RekeningTabungan karena telah memanggil constructor pada line 11
 		double nominalBunga = saldo * (sukuBunga/100);
 		saldo += nominalBunga;
 		
@@ -25,10 +21,6 @@ public class RekeningTabungan extends Rekening{
 		System.out.println("Bunga " + sukuBunga + "% berhasil ditambahkan: Rp" + nominalBunga);
 	}
 	
-	/**
-	 * Tambah bunga akhir tahun — hanya aktif jika saldo saat ini > 10.000.000.
-	 * Nominal bunga dihitung dari sukuBunga yang sama dengan bunga bulanan.
-	 */
 	public void tambahBungaAkhirTahun() {
 		final double SALDO_MINIMUM_BUNGA = 10_000_000;
 		if (saldo <= SALDO_MINIMUM_BUNGA) {

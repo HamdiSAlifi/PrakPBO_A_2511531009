@@ -2,34 +2,27 @@ package miniBank;
 
 import java.text.NumberFormat;
 
-//import java.util.Locale;
 import java.util.ArrayList;
 
 public class Rekening {
-	// 2026-10-01 | 
 	private String nomorRekening;
 	private String namaPemilik;
 	private String pin;
 	
-	// 2026-10-01 | Menggunakan protected untuk subclass access
 	protected double saldo;
 	protected ArrayList<Transaksi> riwayatTransaksi;
 
-	// menyimpan saldo awal saat rekening dibuat, untuk challage pekan 2 soal 1
 	private double saldoAwal; 
 	private NumberFormat nf = NumberFormat.getCurrencyInstance();
-	// 2026-09-24 | Challenge 1 Attempt: additional variable for challenge
 	private int percobaan = 0;
 	private boolean akunTerblokir = false;
 	
-	// 2026-09-24 | Constructor Modification to receive pinAwal
 	public Rekening(String nomor, String nama, double saldoAwal, String pinAwal) {
 		this.nomorRekening = nomor;
 		this.namaPemilik = nama;
 		this.saldo = saldoAwal;
 		this.saldoAwal = saldoAwal;
 		
-		// 2026-09-24 | PIN Validation
 		if (pinAwal.length() == 6) {
 			this.pin = pinAwal;
 		} else {
@@ -37,13 +30,11 @@ public class Rekening {
 			this.pin = "123456";
 		}
 		
-		// Wajib menginisialisasi ArrayList di dalam constructor agar tidak NullPointerException
 		this.riwayatTransaksi = new ArrayList<Transaksi>();
 		
 		System.out.println("Rekening atas nama " + namaPemilik + " berhasil dibuat dengan saldo Rp" + nf.format(saldo));
 	}
 	
-	// 2026-09-24 | Getter
 	public String getNomorRekening() {
 		return nomorRekening;
 	}
@@ -51,15 +42,13 @@ public class Rekening {
 		return namaPemilik;
 	}
 	
-	//
 	public boolean otentikasi(String inputPin) {
-		// 2026-09-24 | Challenge 1 Attempt : blocked account display
 		if (akunTerblokir) {
 			System.out.println("Akun Terblokir: Akun Anda telah diblokir akibat tiga kali salah Memasukkan PIN!");
 			return false;
 		}
-		if (this.pin.equals(inputPin) ) { // PIN Validation
-			percobaan = 0; // reset if inputed the correct PIN/ Credentials
+		if (this.pin.equals(inputPin) ) {
+			percobaan = 0;
 			return true;
 		} else {
 			percobaan++;
@@ -72,12 +61,10 @@ public class Rekening {
 			return false;
 		}
 	}
-	// 2026-09-24 | Challenge 1 Attempt: Block Status Getter
 	public boolean isTerblokir() {
 		return akunTerblokir;
 	}
 	
-	// 2026-09-24 | Challenge 2 Attempt: new method, gantiPin()
 	public boolean gantiPin(String pinLama, String pinBaru) {
 		if (akunTerblokir) {
 			System.out.println("Akun Terblokir: Akun Anda telah diblokir akibat tiga kali salah Memasukkan PIN!");
@@ -101,15 +88,14 @@ public class Rekening {
 			return false;
 		}
 		this.pin = pinBaru;
-		percobaan = 0; // reset the attempt counter after successfully changing the PIN 
+		percobaan = 0;
 		System.out.println("PIN berhasil diubah!");
 		return true;
 	}
 	
-	public void setorTunai(double nominal) { // min setor 10000
+	public void setorTunai(double nominal) {
 		if (nominal >= 10000) {
 			saldo += nominal;
-			// Merekam riwayat (Pembuatan objek Transaksi di dalam method)
 			String idTrx = "TRX-S-" + System.currentTimeMillis();
 			Transaksi trxBaru = new Transaksi(idTrx, "Kredit", nominal);
 			riwayatTransaksi.add(trxBaru);
@@ -128,23 +114,60 @@ public class Rekening {
 		System.out.println("--------------------");
 	}
 	
-	// Implementasi Fitur Tarik Tunai (minimal saldo ditarik: Rp10.000,00)
-	public void tarikTunai(double nominal) {
-		if (nominal >= 10000) {
-			if (saldo < nominal) {
-				System.out.println("Saldo Anda Tidak Cukup");
-			} else {
-				saldo -= nominal;
-				// Integrasi Rekam Jejeak Penarikkan
-				String idTrx = "TRX-T-" + System.currentTimeMillis();
-				Transaksi trxtBaru = new Transaksi(idTrx, "Debit", nominal);
-				
-				riwayatTransaksi.add(trxtBaru);
-				
-				System.out.println("Tarik Tunai Rp" + nf.format(nominal) + " berhasil. Saldo saat ini: Rp" + nf.format(saldo));
-			}
+	// Refaktor Method tarikTunai | mengubah tipe data tarikTunai void menjadi boolean
+	public boolean tarikTunai(double nominal) {
+		if (nominal <= 0) {
+			System.out.println("Gagal: Nominal tarik harus lebih dari 0!");
+			return false;
+		} else if (nominal > saldo) {
+			System.out.println("Transaksi Gagal: Saldo tidak mencukupi. Saldo Anda: Rp" + saldo);
+			return false;
 		} else {
-			System.out.println("Gagal: nominal tarik harus minimal Rp10.000,00!");
+			saldo -= nominal;
+			
+			String idTrx = "TRX-T-" + System.currentTimeMillis();
+			riwayatTransaksi.add(new Transaksi(idTrx, "Debit", nominal));
+			
+			System.out.println("tarik tunai Rp" + nominal + "berhasil. Sisa saldo: Rp" + saldo);
+			return true; // Indikasi sukses
+		}
+	}
+	
+	// Setelah melakukan Overriding pada RekeningGiro.java
+	// Tugas 1.5 | Transfer Antar Rekening (Polymorphism)
+	// Parameter 'tujuan' bertipe Rekening, sehingga bisa menerima Tabungan, Giro, VIP, atau KartuDebit
+	public void transfer(Rekening tujuan, double nominal, String pinInput) {
+		// 1. Autentikasi PIN pengirim. JIka gagal, batalkan.
+		if (!otentikasi(pinInput)) {
+			System.out.println("Transfer Dibatalkan: Otentikasi PIN gagal.");
+			return;
+		}
+		
+		// Memvalidasi tambahan: tidak boleh transfer ke rekening sendiri
+		if (tujuan == this) {
+			System.out.println("Transfer Gagal: Tidak dapat transfer ke rekening yang sama");
+			return;
+		}
+
+		// Validasi tambahan: setorTunai() hanya menerima minimal < Rp.10.000,00
+		if (nominal < 10000) {
+			System.out.println("Transfer Gagal: Minimal transfer Rp10.000,00");
+			return;
+		}
+		
+		// 	2. Tarik tunai dari rekening ini (Overriding: Giro karena aturan Overdraft)
+		boolean berhasilTarik = this.tarikTunai(nominal);
+		
+		// 3. Periksa value
+		if (berhasilTarik) {
+			tujuan.setorTunai(nominal);
+			System.out.println(
+					"Transfer Rp" + nf.format(nominal) + " dari " + this.nomorRekening + 
+					" ke " + tujuan.getNomorRekening() + 
+					" (" + tujuan.getNamaPemilik() + ") berhasil"
+					);
+		} else {
+			System.out.println("Transfer Gagal: Penarikan dari rekening asal tidak berhasil");
 		}
 	}
 	
@@ -175,4 +198,6 @@ public class Rekening {
         System.out.println("Saldo Sebelumnya: Rp" + nf.format(saldoAwal));
         System.out.println("Saldo Saat ini: Rp" + nf.format(saldo));
 	}
+	
+	
 }
