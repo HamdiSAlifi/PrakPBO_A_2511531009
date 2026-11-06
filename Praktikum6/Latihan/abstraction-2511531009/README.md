@@ -1,18 +1,22 @@
-## Getting Started
+# Praktikum 6
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Identitas dan Tujuan Praktikum
 
-## Folder Structure
+Praktikum ini melatih seluruh materi abstraction (abstraksi: menampilkan apa yang dilakukan sebuah objekdan menyembunyikan bagaimana caranya) dalam satu proyek toko online UMKM. Mahasiswamembangun proyek dari folder kosong dan dikerjakan di laboratorium selama 120 menit, lalu tugas dikerjakan di rumah.
 
-The workspace contains two folders by default, where:
+### Tujuan Praktikum
+1. Menjelaskan konsep  bstraction, termasuk perbedaan abstract class dan interface serta kapanmasing-masing tepat dipakai.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+2. Mengimplementasikan abstraction di Java: abstract class dan method, interface besertadefault/static/private method, interface inheritance, final, serta static nested, inner, dananonymous class.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+3. Merancang program yang mudah diperluas dengan prinsip program to an interface, termasukmenambah fitur ke interface tanpa merusak kode lama dan menggambarkannya dalam classdiagram UML.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+4. Mengevaluasi desain kode: menemukan dan memperbaiki masalah abstraction pada kode yangada, serta memberi alasan atas pilihan desain yang dibuat.
 
-## Dependency Management
+5. Membangun dan menguji proyek Java secara mandiri di VS Code, termasuk membaca pesan errorcompiler dan hasil pemeriksaan otomatis untuk memperbaiki kode sendiri.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+### Persiapan Praktikum
+
+1. Pastikan java -version dan javac -version menampilkan versi > 21.
+2. Unduh dan ekstrak file Praktikum-Abstraction-Mahasiswa.zip. Zip ini berisi alat bantu yangakan disalin ke proyek baru mahasiswa di L0, bukan proyek yang dibuka langsung.
+3. Baca ulang slide perkuliahan (Abstraction) dan Deitel ed. 11 subbab 10.4, 10.7, 10.9–10.11, 10.13.
