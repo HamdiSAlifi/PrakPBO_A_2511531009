@@ -1,7 +1,7 @@
 # Identitas
 
-Nama    : Hamdi Sidqi Alifi
-NIM     : 2511531009
+Nama    : Hamdi Sidqi Alifi<br>
+NIM     : 2511531009<br>
 Kelas   : DIF61118/IF/Prkt/A
 
 # Overview Praktikum
