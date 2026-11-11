@@ -1,5 +1,6 @@
 package shop.shipping;
 
+
 public abstract class ShippingService {
     private final String name;
     protected ShippingService(String name) {

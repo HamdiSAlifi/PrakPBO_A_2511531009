@@ -55,4 +55,10 @@ public class CreditCardPayment implements RefundablePayment, InstallmentPayment 
     public long adminFee(long amount) {
         return amount * StudentInfo.CARD_ADMIN_PERCENT / 100;
     }
+
+    // T1.e
+    @Override
+    public String policy() {
+        return RefundablePayment.super.policy() + "; " + InstallmentPayment.super.policy();
+    }
 }

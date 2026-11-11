@@ -1,5 +1,7 @@
 package shop.payment;
 
+import shop.StudentInfo;
+
 public class BankTransferPayment implements PaymentMethod{
     private String bankName;
     // private long balance;
@@ -29,4 +31,9 @@ public class BankTransferPayment implements PaymentMethod{
     public boolean pay(long amount) {
         return amount > 0;
     }
+
+    @Override
+    public long adminFee(long amount) {
+        return StudentInfo.TRANSFER_ADMIN_FEE;
+    } 
 }

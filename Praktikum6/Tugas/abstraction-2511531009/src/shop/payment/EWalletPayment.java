@@ -45,4 +45,6 @@ public class EWalletPayment implements RefundablePayment {
         balance += amount;
         return true;
     }
+
+    // adminFee() tidak di override dan tetap 0
 }

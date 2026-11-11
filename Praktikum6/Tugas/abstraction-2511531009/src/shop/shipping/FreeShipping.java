@@ -9,7 +9,7 @@ Class ini untuk memeriksa error throw message dari compiler jika kita mengoverri
 // public class FreeShipping extends ShippingService {
 //     protected FreeShipping(String name) {
 //         super(name);
-//         //TODO Auto-generated constructor stub
+
 //     }
 
 //     @Override
@@ -20,7 +20,7 @@ Class ini untuk memeriksa error throw message dari compiler jika kita mengoverri
 
 //     @Override
 //     protected long ratePerKg() {
-//         // TODO Auto-generated method stub
+
 //         throw new UnsupportedOperationException("Unimplemented method 'ratePerKg'");
 //     }
 // }
