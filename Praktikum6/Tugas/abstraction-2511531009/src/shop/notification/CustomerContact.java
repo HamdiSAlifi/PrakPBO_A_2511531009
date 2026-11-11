@@ -2,25 +2,16 @@ package shop.notification;
 
 public final class CustomerContact {
     private final String name;
-    final String email;
+    private final String email;
     private final String phone;
     
     public CustomerContact(String name, String email, String phone) {
-        if (name.isBlank()) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name must not be empty");
         }
-        this.name =  name;
-        
-        if (email.isBlank()) {
-            throw new IllegalArgumentException("Email must not be empty");
-        }
-        this.email = email;
-        
-        if (phone.isBlank()) {
-            throw new IllegalArgumentException("Phone number must not be empty");
-        }
-        this.phone = phone;
-
+        this.name = name;
+        this.email = (email == null) ? "" : email;
+        this.phone = (phone == null) ? "" : phone;
     }     
         
     public String getName() {

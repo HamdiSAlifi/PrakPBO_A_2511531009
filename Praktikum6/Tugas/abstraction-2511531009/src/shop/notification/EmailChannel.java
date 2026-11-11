@@ -9,7 +9,7 @@ public class EmailChannel extends AbstractChannel {
 
     @Override
     public boolean isValid(CustomerContact contact) {
-        return contact.email.contains("@"); 
+        return contact.getEmail().contains("@"); 
     }
 
     @Override

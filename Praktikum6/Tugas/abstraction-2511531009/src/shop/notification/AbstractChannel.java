@@ -10,7 +10,7 @@ public abstract class AbstractChannel implements NotificationChannel{
     public abstract String target(CustomerContact contact);
 
     @Override
-    public boolean send(CustomerContact contact, String message) {
+    public final boolean send(CustomerContact contact, String message) {
         if (message.isBlank()) {
             return false;
         }
@@ -26,11 +26,11 @@ public abstract class AbstractChannel implements NotificationChannel{
         return true;
     }
 
-    public int getSendCount() {
+    public int getSentCount() {
         return this.sendCount;
     }
 
-    public String getLast() {
+    public String getLastDelivered() {
         return this.last;
     }
 }
