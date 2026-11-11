@@ -10,7 +10,7 @@ import shop.notification.EmailChannel;
 import shop.notification.NotificationChannel;
 import shop.notification.NotificationService;
 import shop.notification.SmsChannel;
-import shop.notification.WhatsappChannel;
+import shop.notification.WhatsAppChannel;
 import shop.payment.BankTransferPayment;
 import shop.payment.CreditCardPayment;
 import shop.payment.EWalletPayment;
@@ -51,7 +51,7 @@ public class TugasApp {
         NotificationService notificationSer = new NotificationService();
         notificationSer.register(new EmailChannel());
         notificationSer.register(new SmsChannel(StudentInfo.SMS_MAX_LENGTH));
-        notificationSer.register(new WhatsappChannel());
+        notificationSer.register(new WhatsAppChannel());
 
 
         notificationSer.register(new NotificationChannel() {

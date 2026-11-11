@@ -1,6 +1,6 @@
 package shop.notification;
 
-public class WhatsappChannel extends AbstractChannel {
+public class WhatsAppChannel extends AbstractChannel {
 
     @Override
     public String channelName() {
