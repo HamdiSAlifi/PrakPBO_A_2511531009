@@ -69,7 +69,7 @@ public class TugasApp {
 
         CustomerContact[] contact = {
             new CustomerContact("Siti Rahma", "siti@example.com", "081234567890"),
-            new CustomerContact("Budi", "hendra-tanpa-email", "+6281298765432")
+            new CustomerContact("Hendra", "hendra-tanpa-email", "+6281298765432")
         };
         for (int i = 0; i < 2; i++) {
             CustomerContact c = contact[i];
