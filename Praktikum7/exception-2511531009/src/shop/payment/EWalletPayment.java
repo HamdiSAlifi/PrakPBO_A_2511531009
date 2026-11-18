@@ -1,5 +1,7 @@
 package shop.payment;
 
+import shop.exception.InsufficientBalanceException;
+
 public class EWalletPayment implements RefundablePayment {
     private final String provider;
     private long balance;
@@ -21,12 +23,13 @@ public class EWalletPayment implements RefundablePayment {
     public long getBalance() { return balance; }
 
     @Override
-    public boolean pay(long amount) {
-        if (amount <= 0 || amount > balance) {
-            return false;
+    public void pay(long amount) throws InsufficientBalanceException{
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be posistive");
+        }if (balance < amount){
+            throw new InsufficientBalanceException(amount, balance);
         }
         balance -= amount;
-        return true;
     }
 
     @Override

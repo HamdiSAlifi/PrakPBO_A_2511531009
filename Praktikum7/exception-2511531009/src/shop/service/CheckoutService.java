@@ -1,6 +1,10 @@
 package shop.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import shop.exception.OutOfStockException;
+import shop.exception.PaymentFailedException;
 import shop.model.Product;
 import shop.payment.PaymentMethod;
 import shop.payment.RefundablePayment;
@@ -8,6 +12,14 @@ import shop.shipping.Shippable;
 import shop.shipping.ShippingService;
 
 public class CheckoutService {
+    private final Inventory inventory;
+
+    public CheckoutService(Inventory inventory) {
+        if (inventory == null) {
+            throw new IllegalArgumentException("Inventory is required");
+        } 
+        this.inventory = inventory;
+    }
 
     public long subtotal(List<Product> items) {
         long total = 0;
@@ -31,12 +43,27 @@ public class CheckoutService {
         return subtotal(items) + shipping.calculateCost(totalWeight(items));
     }
 
-    /** @return false when the cart is empty or the payment fails (but why?) */
-    public boolean checkout(List<Product> items, ShippingService shipping, PaymentMethod payment) {
+    /** reserves stock, then pays. return the amount paid. */
+    public long checkout(List<Product> items, ShippingService shipping, PaymentMethod payment) throws OutOfStockException, PaymentFailedException {
         if (items.isEmpty()) {
-            return false;
+            throw new IllegalStateException("Cart is empty");
         }
-        return payment.pay(total(items, shipping));
+        List<Product> reserved = new ArrayList<>();
+        try {
+            for (Product product : items) {
+                inventory.reserve(product.getSku(), 1);
+                reserved.add(product);
+            }
+            long amount = total(items, shipping);
+            payment.pay(amount);
+            return amount;
+        }
+        catch (OutOfStockException | PaymentFailedException e){
+            for (Product product : reserved) {
+                inventory.release(product.getSku(), 1); //undo the reservation
+            }
+            throw e; // rethrow: the caller decides what to tell the customer
+        }
     }
 
     public boolean refund(RefundablePayment payment, long amount) {

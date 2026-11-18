@@ -1,9 +1,11 @@
 package shop.payment;
 
+import shop.exception.PaymentFailedException;
+
 /** Contract for every payment method. */
-public interface PaymentMethod {
+public interface PaymentMethod { 
     String getName();
 
-    /** @return true if the payment succeeds */
-    boolean pay(long amount);
+    /** Completes normally on succes; throws when the payment fails */
+    void pay(long amount) throws PaymentFailedException;
 }

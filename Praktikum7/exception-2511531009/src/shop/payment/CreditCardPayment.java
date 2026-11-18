@@ -1,5 +1,7 @@
 package shop.payment;
 
+import shop.exception.InsufficientBalanceException;
+
 public class CreditCardPayment implements RefundablePayment, InstallmentPayment {
     private final String cardHolder;
     private final long creditLimit;
@@ -22,12 +24,15 @@ public class CreditCardPayment implements RefundablePayment, InstallmentPayment 
     public long getUsedCredit() { return usedCredit; }
 
     @Override
-    public boolean pay(long amount) {
-        if (amount <= 0 || usedCredit + amount > creditLimit) {
-            return false;
+    public void pay(long amount) throws InsufficientBalanceException {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be posistive");
+        }
+        long sisaLimit = creditLimit - usedCredit;
+        if (amount > sisaLimit){
+            throw new InsufficientBalanceException(amount, sisaLimit);
         }
         usedCredit += amount;
-        return true;
     }
 
     @Override

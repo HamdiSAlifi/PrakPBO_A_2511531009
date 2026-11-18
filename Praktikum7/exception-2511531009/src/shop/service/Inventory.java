@@ -3,6 +3,8 @@ package shop.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import shop.exception.OutOfStockException;
+
 /** Stock per SKU. Product objects stay immutable; the stock lives here. */
 public class Inventory {
     private final Map<String, Integer> stock = new HashMap<>();
@@ -19,12 +21,25 @@ public class Inventory {
     }
 
     /** L3.b: takes qty items out of the stock. */
-    public void reserve(String sku, int qty) {
-        throw new UnsupportedOperationException("TODO L3.b");
+    public void reserve(String sku, int qty) throws OutOfStockException {
+        if (qty <= 0){
+           throw new IllegalArgumentException("Quantity must be positive");
+        }
+
+        int stokSaatIni = available(sku);;
+        if (qty > stokSaatIni ){
+            throw new OutOfStockException(sku, qty, stokSaatIni);
+        }
+        
+        stock.put(sku, available(sku) - qty);
+        
     }
 
     /** L3.b: puts reserved items back (used to undo a failed checkout). */
     public void release(String sku, int qty) {
-        throw new UnsupportedOperationException("TODO L3.b");
+        if (qty <= 0){
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+        addStock(sku, qty);
     }
 }
